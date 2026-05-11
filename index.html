@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Queen Skills — Portfolio de Yacine Touré, Spécialiste Marketing & Communication Digitale à Dakar, Sénégal." />
+  <meta property="og:title" content="Queen Skills — Marketing & Communication Digitale" />
+  <meta property="og:description" content="Portfolio de Yacine Touré — Sites web, Stratégie digitale, Copywriting, Branding à Dakar." />
+  <title>Queen Skills — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #f7f3ec; cursor: none; font-family: 'Jost', sans-serif; color: #0f0d0a; overflow-x: hidden; }
+
+    :root {
+      --cream: #f7f3ec;
+      --ink: #0f0d0a;
+      --gold: #b8934a;
+      --gold-light: #d4af6e;
+      --muted: #7a7060;
+      --border: rgba(184,147,74,0.18);
+    }
+
+    .cursor-ring {
+      position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+      border: 1px solid rgba(184,147,74,0.5); border-radius: 50%;
+      pointer-events: none; z-index: 9999; transition: transform 0.12s ease;
+    }
+    .cursor-dot {
+      position: fixed; top: 0; left: 0; width: 6px; height: 6px;
+      background: var(--gold); border-radius: 50%;
+      pointer-events: none; z-index: 9999; transition: transform 0.04s ease;
+    }
+
+    .serif { font-family: 'Playfair Display', Georgia, serif; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 32px 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(247,243,236,0.92);
+      backdrop-filter: blur(16px);
+      padding: 20px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; letter-spacing: 0.04em; color: var(--ink); }
+    .nav-logo span { color: var(--gold); font-style: italic; }
+    .nav-links { display: flex; gap: 40px; }
+    .nav-links a { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      border: 1px solid var(--gold); color: var(--gold);
+      padding: 10px 26px; background: transparent; cursor: none;
+      transition: all 0.3s; font-family: 'Jost', sans-serif;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--cream); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+      position: relative; overflow: hidden;
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 64px 80px; position: relative; z-index: 2;
+    }
+    .hero-right { position: relative; overflow: hidden; }
+    .hero-right img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.6) brightness(0.92); transition: transform 8s ease; }
+    .hero-right:hover img { transform: scale(1.04); }
+    .hero-right::before {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to right, var(--cream) 0%, transparent 30%);
+    }
+    .hero-right::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40%; z-index: 1;
+      background: linear-gradient(to top, var(--cream) 0%, transparent 100%);
+    }
+    .hero-tag {
+      font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 24px; display: flex; align-items: center; gap: 14px;
+      opacity: 0; transform: translateY(16px); transition: all 0.7s 0.1s ease;
+    }
+    .hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+    .hero-tag.loaded { opacity: 1; transform: translateY(0); }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 5.5vw, 80px); font-weight: 400; line-height: 1.05;
+      color: var(--ink); opacity: 0; transform: translateY(24px);
+      transition: all 0.8s 0.2s cubic-bezier(0.22,1,0.36,1);
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-title.loaded { opacity: 1; transform: translateY(0); }
+    .hero-sub {
+      font-size: 13px; letter-spacing: 0.06em; line-height: 1.7;
+      color: var(--muted); max-width: 380px; margin: 28px 0 48px;
+      opacity: 0; transform: translateY(16px);
+      transition: all 0.8s 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .hero-sub.loaded { opacity: 1; transform: translateY(0); }
+    .hero-actions {
+      display: flex; gap: 16px; align-items: center;
+      opacity: 0; transform: translateY(16px);
+      transition: all 0.8s 0.5s cubic-bezier(0.22,1,0.36,1);
+    }
+    .hero-actions.loaded { opacity: 1; transform: translateY(0); }
+    .hero-scroll {
+      position: absolute; bottom: 48px; right: 64px; z-index: 3;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted);
+    }
+    .scroll-bar { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--gold), transparent); animation: barPulse 2s ease-in-out infinite; }
+    @keyframes barPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+    /* BUTTONS */
+    .btn-gold {
+      background: var(--gold); color: var(--cream); padding: 15px 36px;
+      font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+      border: none; cursor: none; font-family: 'Jost', sans-serif; font-weight: 500;
+      transition: all 0.3s; display: inline-block;
+    }
+    .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent; color: var(--muted); padding: 15px 28px;
+      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+      border: 1px solid rgba(122,112,96,0.3); cursor: none; font-family: 'Jost', sans-serif;
+      transition: all 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* DIVIDER STATS */
+    .divider {
+      display: flex; align-items: center;
+      padding: 0 64px;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .divider-item {
+      flex: 1; padding: 40px 0; display: flex; gap: 16px; align-items: center;
+      border-right: 1px solid var(--border);
+    }
+    .divider-item:last-child { border-right: none; }
+    .divider-num { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 400; color: var(--gold); line-height: 1; }
+    .divider-text { font-size: 11px; letter-spacing: 0.1em; color: var(--muted); line-height: 1.5; text-transform: uppercase; }
+
+    /* SECTIONS */
+    .section { padding: 96px 64px; position: relative; }
+    .section-label {
+      font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 4vw, 54px); font-weight: 400; line-height: 1.1;
+      color: var(--ink); margin-bottom: 64px;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center; }
+    .about-img-wrap { position: relative; }
+    .about-img-wrap img { width: 100%; aspect-ratio: 3/4; object-fit: cover; filter: saturate(0.75); }
+    .about-img-wrap::after {
+      content: ''; position: absolute; bottom: -20px; right: -20px; left: 20px; top: 20px;
+      border: 1px solid var(--border); z-index: -1;
+    }
+    .about-badge {
+      position: absolute; bottom: 28px; left: -28px;
+      background: var(--ink); color: var(--cream); padding: 20px 24px; min-width: 160px;
+    }
+    .about-badge-num { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--gold); line-height: 1; }
+    .about-badge-text { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(247,243,236,0.5); margin-top: 6px; line-height: 1.4; }
+    .about-body p { font-size: 15px; line-height: 1.85; color: var(--muted); margin-bottom: 20px; }
+    .about-body p strong { color: var(--ink); font-weight: 500; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+    .about-tag { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; border: 1px solid var(--border); padding: 8px 16px; color: var(--muted); }
+
+    /* PROJECTS */
+    .projects-bg { background: var(--ink); }
+    .projects-bg .section-label { color: var(--gold-light); }
+    .projects-bg .section-label::before { background: var(--gold-light); }
+    .projects-bg .section-title { color: var(--cream); }
+    .projects-bg .section-title em { color: var(--gold-light); }
+    .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 56px; margin-top: -32px; }
+    .filter-btn {
+      font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 8px 18px; border: 1px solid rgba(247,243,236,0.12);
+      color: rgba(247,243,236,0.4); background: transparent; cursor: none;
+      font-family: 'Jost', sans-serif; transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active { color: var(--gold-light); border-color: var(--gold-light); }
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+    .project-card { position: relative; overflow: hidden; cursor: none; aspect-ratio: 4/3; }
+    .project-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.22,1,0.36,1), filter 0.4s; filter: saturate(0.5) brightness(0.6); }
+    .project-card:hover img { transform: scale(1.06); filter: saturate(0.7) brightness(0.75); }
+    .project-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,13,10,0.95) 0%, rgba(15,13,10,0.1) 60%); }
+    .project-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 32px; transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); }
+    .project-cat { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 8px; }
+    .project-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 400; color: var(--cream); margin-bottom: 8px; }
+    .project-desc { font-size: 12px; line-height: 1.6; color: rgba(247,243,236,0.55); max-width: 340px; margin-bottom: 16px; opacity: 0; transform: translateY(8px); transition: all 0.4s 0.05s; }
+    .project-card:hover .project-desc { opacity: 1; transform: translateY(0); }
+    .project-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .project-tag { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(184,147,74,0.15); border: 1px solid rgba(184,147,74,0.25); color: var(--gold-light); padding: 4px 10px; }
+
+    /* SERVICES */
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .service-item { padding: 48px 40px; border: 1px solid var(--border); margin: -1px 0 0 -1px; transition: background 0.3s; position: relative; }
+    .service-item:hover { background: rgba(184,147,74,0.04); }
+    .service-num { font-family: 'Playfair Display', serif; font-size: 13px; color: var(--gold); margin-bottom: 20px; font-style: italic; }
+    .service-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 400; color: var(--ink); margin-bottom: 16px; line-height: 1.3; }
+    .service-desc { font-size: 13px; line-height: 1.8; color: var(--muted); }
+    .service-arrow { position: absolute; bottom: 32px; right: 32px; font-size: 20px; color: var(--border); transition: color 0.2s, transform 0.2s; }
+    .service-item:hover .service-arrow { color: var(--gold); transform: translate(4px,-4px); }
+
+    /* TESTIMONIALS */
+    .testi-bg { background: rgba(184,147,74,0.04); padding-top: 64px; padding-bottom: 64px; }
+    .testi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .testi-card { border: 1px solid var(--border); padding: 48px; position: relative; }
+    .testi-quote { font-family: 'Playfair Display', serif; font-size: 64px; color: var(--gold); line-height: 1; position: absolute; top: 24px; left: 40px; opacity: 0.4; }
+    .testi-text { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 400; font-style: italic; line-height: 1.65; color: var(--ink); margin-top: 24px; margin-bottom: 32px; }
+    .testi-author { display: flex; align-items: center; gap: 14px; }
+    .testi-initials { width: 40px; height: 40px; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--cream); letter-spacing: 0.05em; flex-shrink: 0; }
+    .testi-name { font-size: 11px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; }
+
+    /* CONTACT */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 96px; align-items: start; }
+    .contact-info h3 { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 400; line-height: 1.2; color: var(--ink); margin-bottom: 24px; }
+    .contact-info h3 em { color: var(--gold); font-style: italic; }
+    .contact-info p { font-size: 13px; line-height: 1.8; color: var(--muted); margin-bottom: 40px; }
+    .contact-details { display: flex; flex-direction: column; gap: 16px; }
+    .contact-detail { display: flex; align-items: center; gap: 14px; font-size: 12px; letter-spacing: 0.08em; color: var(--muted); }
+    .contact-detail-icon { width: 36px; height: 36px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--gold); font-size: 12px; }
+    .contact-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-input, .form-select, .form-textarea {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--ink); padding: 16px 20px; font-size: 13px;
+      font-family: 'Jost', sans-serif; outline: none; transition: border-color 0.2s; width: 100%;
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: rgba(122,112,96,0.5); }
+    .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--gold); }
+    .form-textarea { resize: none; height: 140px; }
+    .form-select { appearance: none; cursor: none; }
+    .sent-msg { text-align: center; padding: 48px 32px; border: 1px solid var(--border); display: none; }
+    .sent-msg.show { display: block; }
+    .sent-msg .icon { font-size: 32px; margin-bottom: 16px; }
+    .sent-msg h4 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 12px; color: var(--ink); }
+    .sent-msg p { font-size: 13px; color: var(--muted); }
+
+    /* FOOTER */
+    footer { background: var(--ink); padding: 48px 64px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(184,147,74,0.15); }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--cream); }
+    .footer-logo span { color: var(--gold); font-style: italic; }
+    .footer-copy { font-size: 11px; color: rgba(247,243,236,0.3); letter-spacing: 0.08em; }
+    .footer-socials { display: flex; gap: 20px; }
+    .footer-socials a { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(247,243,236,0.4); text-decoration: none; transition: color 0.2s; }
+    .footer-socials a:hover { color: var(--gold); }
+
+    @media (max-width: 900px) {
+      nav, nav.scrolled { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 40vh; }
+      .hero-left { padding: 120px 24px 60px; }
+      .hero-scroll { display: none; }
+      .divider { flex-direction: column; padding: 0 24px; }
+      .divider-item { border-right: none; border-bottom: 1px solid var(--border); padding: 28px 0; width: 100%; }
+      .section { padding: 64px 24px; }
+      .about-grid, .contact-grid, .testi-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .about-badge { left: 8px; }
+      footer { flex-direction: column; gap: 20px; text-align: center; padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- NAV -->
+  <nav id="mainNav">
+    <div class="nav-logo serif">Queen <span>Skills</span></div>
+    <div class="nav-links">
+      <a href="#about">À Propos</a>
+      <a href="#projets">Projets</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+      Travailler Ensemble
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-tag" id="heroTag">Marketing & Communication Digitale · Dakar</div>
+      <h1 class="hero-title serif" id="heroTitle">Yacine<br><em>Touré</em><br>Queen Skills</h1>
+      <p class="hero-sub" id="heroSub">
+        Spécialiste en marketing digital, création de contenu et stratégie de marque. Je transforme vos idées en présences digitales qui captivent, engagent et convertissent.
+      </p>
+      <div class="hero-actions" id="heroActions">
+        <button class="btn-gold" onclick="document.getElementById('projets').scrollIntoView({behavior:'smooth'})">Voir mes projets</button>
+        <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Me contacter</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=85" alt="Portrait professionnel" />
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-bar"></div>
+      Défiler
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="divider">
+    <div class="divider-item">
+      <div class="divider-num serif">5+</div>
+      <div class="divider-text">Années d'expérience</div>
+    </div>
+    <div class="divider-item">
+      <div class="divider-num serif">3</div>
+      <div class="divider-text">Entreprises · Jokko, Republiks, Am. Auto.</div>
+    </div>
+    <div class="divider-item">
+      <div class="divider-num serif">2</div>
+      <div class="divider-text">Langues · Français & Anglais</div>
+    </div>
+    <div class="divider-item">
+      <div class="divider-num serif" style="font-size:22px">GoMyCode</div>
+      <div class="divider-text">Formation · Développement Web</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="section-label">À Propos de Moi</div>
+    <div class="about-grid">
+      <div class="about-img-wrap">
+        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80" alt="Queen Skills" />
+        <div class="about-badge">
+          <div class="about-badge-num serif">Jokko</div>
+          <div class="about-badge-text">Chargée Marketing &<br>Communication Digitale</div>
+        </div>
+      </div>
+      <div class="about-body">
+        <div class="section-label">Mon histoire</div>
+        <h2 class="section-title serif" style="margin-bottom:28px">Créer du sens,<br><em>à chaque pixel</em></h2>
+        <p>Je suis <strong>Yacine Touré</strong>, connue sous le nom de <strong>Queen Skills</strong> — Chargée Marketing & Communication Digitale chez <strong>Jokko</strong>, basée à Dakar, Sénégal.</p>
+        <p>Mon parcours mêle <strong>assistanat, télémarketing et communication digitale</strong>, avec des expériences riches chez American de l'Automobile et Republiks. Formée à l'Institut Britannique du Sénégal, je suis parfaitement bilingue français-anglais.</p>
+        <p>En 2024, j'ai renforcé mon profil tech en suivant une <strong>formation développeur web à GoMyCode</strong> — ce qui me permet aujourd'hui de concevoir et de livrer des expériences digitales de bout en bout, du concept au code.</p>
+        <p>Ce qui me distingue : une capacité à combiner <strong>rigueur stratégique</strong> et <strong>sensibilité créative</strong>, enrichie par une intégration naturelle des outils d'intelligence artificielle dans mon travail quotidien.</p>
+        <div class="about-tags">
+          <span class="about-tag">Stratégie digitale</span>
+          <span class="about-tag">Copywriting FR/EN</span>
+          <span class="about-tag">Branding</span>
+          <span class="about-tag">Développement Web</span>
+          <span class="about-tag">IA & Productivité</span>
+          <span class="about-tag">Social Media</span>
+          <span class="about-tag">Dakar · Sénégal</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section projects-bg" id="projets">
+    <div class="section-label">Projets Sélectionnés</div>
+    <h2 class="section-title serif">Mon <em>Travail</em></h2>
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterProjects('Tous', this)">Tous</button>
+      <button class="filter-btn" onclick="filterProjects('Sites web', this)">Sites web & Landing pages</button>
+      <button class="filter-btn" onclick="filterProjects('Stratégie', this)">Stratégie digitale</button>
+      <button class="filter-btn" onclick="filterProjects('Contenu', this)">Contenu & Copywriting</button>
+      <button class="filter-btn" onclick="filterProjects('Branding', this)">Branding & Identité visuelle</button>
+    </div>
+    <div class="projects-grid" id="projectsGrid">
+      <div class="project-card" data-cat="Sites web">
+        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6a8ab37a?w=800&q=80" alt="Skillzya Realty" />
+        <div class="project-overlay"></div>
+        <div class="project-info">
+          <div class="project-cat">Sites web & Landing pages · 2025</div>
+          <div class="project-name serif">Skillzya Realty</div>
+          <div class="project-desc">Landing page immobilière haut de gamme — identité visuelle sombre, fiches biens interactives et formulaire de consultation privée.</div>
+          <div class="project-tags">
+            <span class="project-tag">UI Design</span>
+            <span class="project-tag">Immobilier</span>
+            <span class="project-tag">Dakar</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-card" data-cat="Stratégie">
+        <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80" alt="Campagne Social Media" />
+        <div class="project-overlay"></div>
+        <div class="project-info">
+          <div class="project-cat">Stratégie digitale · 2024</div>
+          <div class="project-name serif">Campagne Social Media</div>
+          <div class="project-desc">Stratégie de contenu multiplateforme pour une marque de mode sénégalaise — croissance organique de 340% en 3 mois.</div>
+          <div class="project-tags">
+            <span class="project-tag">Instagram</span>
+            <span class="project-tag">LinkedIn</span>
+            <span class="project-tag">Contenu</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-card" data-cat="Contenu">
+        <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80" alt="Identité Éditoriale Jokko" />
+        <div class="project-overlay"></div>
+        <div class="project-info">
+          <div class="project-cat">Contenu & Copywriting · 2024</div>
+          <div class="project-name serif">Identité Éditoriale Jokko</div>
+          <div class="project-desc">Refonte du discours de marque, charte éditoriale et production de contenus bilingues français-anglais pour Jokko.</div>
+          <div class="project-tags">
+            <span class="project-tag">Copywriting</span>
+            <span class="project-tag">Branding éditorial</span>
+            <span class="project-tag">Bilingue</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-card" data-cat="Branding">
+        <img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&q=80" alt="Identité Visuelle Republiks" />
+        <div class="project-overlay"></div>
+        <div class="project-info">
+          <div class="project-cat">Branding & Identité visuelle · 2023</div>
+          <div class="project-name serif">Identité Visuelle Republiks</div>
+          <div class="project-desc">Conception de l'identité graphique complète — logo, palette, typographie et déclinaisons digitales pour Republiks.</div>
+          <div class="project-tags">
+            <span class="project-tag">Branding</span>
+            <span class="project-tag">Direction artistique</span>
+            <span class="project-tag">Dakar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <div class="section-label">Ce que je propose</div>
+    <h2 class="section-title serif">Mes <em>Services</em></h2>
+    <div class="services-grid">
+      <div class="service-item">
+        <div class="service-num serif">01</div>
+        <h3 class="service-title serif">Sites web & Landing pages</h3>
+        <p class="service-desc">Conception de pages web sur-mesure, élégantes et orientées conversion. Du brief à la mise en ligne, je crée des expériences digitales qui représentent votre marque à sa juste valeur.</p>
+        <span class="service-arrow">↗</span>
+      </div>
+      <div class="service-item">
+        <div class="service-num serif">02</div>
+        <h3 class="service-title serif">Stratégie digitale</h3>
+        <p class="service-desc">Audit, positionnement et plan d'action digital adapté à votre marché. Je traduis vos ambitions en présence en ligne cohérente et mesurable.</p>
+        <span class="service-arrow">↗</span>
+      </div>
+      <div class="service-item">
+        <div class="service-num serif">03</div>
+        <h3 class="service-title serif">Contenu & Copywriting</h3>
+        <p class="service-desc">Textes de marque, scripts, articles et contenus réseaux sociaux en français et en anglais. Des mots qui captivent, engagent et convertissent.</p>
+        <span class="service-arrow">↗</span>
+      </div>
+      <div class="service-item">
+        <div class="service-num serif">04</div>
+        <h3 class="service-title serif">Branding & Identité visuelle</h3>
+        <p class="service-desc">Création ou refonte de votre identité de marque — logo, charte graphique, ton et déclinaisons. Une image forte et mémorable pour vous démarquer.</p>
+        <span class="service-arrow">↗</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section testi-bg">
+    <div class="section-label">Ils me font confiance</div>
+    <h2 class="section-title serif">Témoignages</h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-quote serif">"</div>
+        <p class="testi-text">Queen Skills a transformé notre présence digitale. Son sens de l'esthétique et sa rigueur sont rares.</p>
+        <div class="testi-author">
+          <div class="testi-initials">DJ</div>
+          <div class="testi-name">Directrice Marketing, Jokko</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-quote serif">"</div>
+        <p class="testi-text">Un travail de grande qualité, livré dans les délais. Le copywriting a vraiment élevé notre marque.</p>
+        <div class="testi-author">
+          <div class="testi-initials">FR</div>
+          <div class="testi-name">Fondateur, Republiks</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="section-label">Contact</div>
+        <h3>Travaillons <em>ensemble</em></h3>
+        <p>Vous avez un projet, une idée ou simplement envie d'échanger ? Je suis disponible pour des missions freelance, des collaborations et des opportunités à Dakar et à l'international.</p>
+        <div class="contact-details">
+          <div class="contact-detail"><div class="contact-detail-icon">✦</div><span>Disponible pour missions freelance</span></div>
+          <div class="contact-detail"><div class="contact-detail-icon">✦</div><span>Dakar, Sénégal (remote possible)</span></div>
+          <div class="contact-detail"><div class="contact-detail-icon">✦</div><span>Français · Anglais</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="contact-form" id="contactForm">
+          <div class="form-row">
+            <input class="form-input" id="fname" placeholder="Votre nom" />
+            <input class="form-input" id="femail" placeholder="Votre email" />
+          </div>
+          <select class="form-select" id="fservice">
+            <option value="">Type de projet</option>
+            <option>Site web & Landing page</option>
+            <option>Stratégie digitale</option>
+            <option>Contenu & Copywriting</option>
+            <option>Branding & Identité visuelle</option>
+            <option>Autre</option>
+          </select>
+          <textarea class="form-textarea" id="fmessage" placeholder="Décrivez votre projet..."></textarea>
+          <button class="btn-gold" style="width:fit-content" onclick="sendForm()">Envoyer le Message</button>
+        </div>
+        <div class="sent-msg" id="sentMsg">
+          <div class="icon">✦</div>
+          <h4 class="serif">Message envoyé !</h4>
+          <p>Merci pour votre message. Je vous répondrai dans les plus brefs délais.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo serif">Queen <span>Skills</span></div>
+    <div class="footer-copy">© 2025 Yacine Touré · Dakar, Sénégal</div>
+    <div class="footer-socials">
+      <a href="#">LinkedIn</a>
+      <a href="#">Instagram</a>
+      <a href="#">Behance</a>
+    </div>
+  </footer>
+
+  <script>
+    // Cursor
+    const ring = document.getElementById('cursorRing');
+    const dot = document.getElementById('cursorDot');
+    document.addEventListener('mousemove', e => {
+      ring.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+      dot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
+    });
+
+    // Nav scroll
+    window.addEventListener('scroll', () => {
+      document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Hero load animation
+    setTimeout(() => {
+      document.getElementById('heroTag').classList.add('loaded');
+      document.getElementById('heroTitle').classList.add('loaded');
+      document.getElementById('heroSub').classList.add('loaded');
+      document.getElementById('heroActions').classList.add('loaded');
+    }, 120);
+
+    // Project filter
+    function filterProjects(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.project-card').forEach(card => {
+        if (cat === 'Tous' || card.dataset.cat === cat) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Contact form
+    function sendForm() {
+      const name = document.getElementById('fname').value;
+      const email = document.getElementById('femail').value;
+      const msg = document.getElementById('fmessage').value;
+      if (name && email && msg) {
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('sentMsg').classList.add('show');
+      }
+    }
+  </script>
+</body>
+</html>
